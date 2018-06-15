@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CSCI3130_Group3_Project</string>
+    <string name="forget_password">I forgot my password</string>
+    <string name="username_hint">Enter username (e-mail)</string>
+    <string name="password_hint">Enter password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+
+</resources>
