@@ -1,12 +1,14 @@
 package com.example.group3.csci3130_group3_project;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button login_bt;
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText psw_editText;
     private  EditText userN_editText;
     private ProgressDialog progressDialog;
-
+    private InputMethodManager imm;
     private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog=new ProgressDialog(this);
         login_bt.setOnClickListener(this);
         regs_bt.setOnClickListener(this);
-
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        Intent i = getIntent();
+        userN_editText.setText(i.getStringExtra("email"));
 
     }
 
@@ -78,17 +84,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful())
                 {
                     finish();
+
+
                     startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                }
+                else
+                {
+                    psw_editText.setText(null);
+                    Toast.makeText(getApplicationContext(),"Enter corrected password",Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
         });
-
-
     }
+
+    private void findPassword()
+    {
+        finish();
+        startActivity(new Intent(getApplicationContext(),Email_Activity.class));
+    }
+
     @Override
     public void onClick(View v) {
+        imm.hideSoftInputFromWindow(psw_editText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(userN_editText.getWindowToken(), 0);
         if (v==login_bt)
         {
+
             user_login();
         }
 
@@ -96,6 +118,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             finish();
             //go to the register page
+            //register
+            //register
+        }
+        if(v==fid_bt)
+        {
+            findPassword();
         }
     }
+
 }
